@@ -142,6 +142,7 @@ function clientePatch(req,res,next){
     //         };
     //     });
     // };
+    
     res.json({
         httpStatus: 200,
         message: "ServerMessage",
