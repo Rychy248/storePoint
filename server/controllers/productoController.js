@@ -1,27 +1,28 @@
-const { Cliente } = require("../models/models");
+const { Producto } = require("../models/models");
 const { MyError, defaultError } = require("../utils/customErrors");
 
-async function clienteGet(req,res,next) {
+async function productoGet(req,res,next) {
     let queryParams = {};
-    if (req.params.clienteId){
+    
+    if (req.params.productoId){
         queryParams = {
             where: {
-              id: req.params.clienteId
+              id: req.params.productoId
         }};
     };
 
-    Cliente.findAll(queryParams)
-    .then(clientes =>{
-        let msgToSend = (req.params.clienteId && clientes.length == 0) ? 
-        "Cliente no encontrado": (!req.params.clienteId && clientes.length == 0) ? 
-        "Ningún cliente se ha ingresado" : (req.params.clienteId) ?
-        "Cliente econtrado": "Todos los clientes retornados";
+    Producto.findAll(queryParams)
+    .then(productos =>{
+        let msgToSend = (req.params.productoId && productos.length == 0) ? 
+        "Producto no encontrado": (!req.params.productoId && productos.length == 0) ? 
+        "Ningún producto se ha ingresado" : (req.params.productoId) ?
+        "Producto econtrado": "Todos los productos retornados";
             
         res.json({
             error:0,
             status:200,
             msg:msgToSend,
-            data:clientes
+            data:productos
         });
 
     })
@@ -30,21 +31,19 @@ async function clienteGet(req,res,next) {
     });
 };
 
-async function clientePost(req, res, next){
+async function productoPost(req, res, next){
     
-    Cliente.create({
-        nombres: req.body.nombres,
-        apellidos: req.body.apellidos,
-        direccion: req.body.direccion,
-        telefono: req.body.telefono,
-        email: req.body.email
+    Producto.create({
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion,
+        precio: req.body.precio,
     })
-    .then((cliente)=>{
+    .then((producto)=>{
         res.json({
             error:0,
             status:200,
-            msg:"Cliente creado correctamente",
-            data:cliente
+            msg:"Producto creado correctamente",
+            data:producto
         });
     })
     .catch((err) => {
@@ -53,13 +52,13 @@ async function clientePost(req, res, next){
     
 };
 
-function clienteDeleteMany(req, res, next){
-    // cliente.deleteMany({})
+function productoDeleteMany(req, res, next){
+    // producto.deleteMany({})
     // .then((response)=>{
     //     res.json({
     //         error:0,
     //         status: 200,
-    //         msg:"All clientes deleted succesfully",
+    //         msg:"All productos deleted succesfully",
     //         data:response,
     //     });
     // })
@@ -71,26 +70,26 @@ function clienteDeleteMany(req, res, next){
         httpStatus: 200,
         message: "Method not implemented",
         data: [
-        {1:"cliente DELETE MANY reached"}
+        {1:"producto DELETE MANY reached"}
     ]
 });
 };
 
-function clienteDeleteOne(req, res, next){
-    // cliente.deleteOne({_id : req.params.clienteId})
+function productoDeleteOne(req, res, next){
+    // producto.deleteOne({_id : req.params.productoId})
     // .then((response)=>{
     //     if (response.deletedCount == 0){
     //         res.json({
     //             error:0,
     //             status: 200,
-    //             msg:`cliente NOT FOUND`,
+    //             msg:`producto NOT FOUND`,
     //             data:response,
     //         });
     //     }else{
     //         res.json({
     //             error:0,
     //             status: 200,
-    //             msg:`cliente was deleted succesfully`,
+    //             msg:`producto was deleted succesfully`,
     //             data:response,
     //         });
     //     };
@@ -103,23 +102,24 @@ function clienteDeleteOne(req, res, next){
         httpStatus: 200,
         message: "Method not implemented",
         data: [
-        {1:"cliente DELETE ONE reached"}
+        {1:"producto DELETE ONE reached"}
     ]
 });
 };
 
-async function clientePatch(req,res,next){
-    const validFields = ["nombres", "apellidos", "direccion", "telefono", "email"];
-    const cliente = await Cliente.findByPk(req.params.clienteId);
-    const {nombres, apellidos, direccion, telefono, email, ... extraFields} = req.body; 
+async function productoPatch(req,res,next){
+    const validFields = ["nombre", "descripcion", "precio"];
+    const producto = await Producto.findByPk(req.params.productoId);
+    const {nombre, descripcion, precio, ... extraFields} = req.body; 
     
-    if((!nombres && !apellidos && !direccion && !telefono && !email) || !cliente){
+    if((!nombre && !descripcion && !precio) || !producto){
         return res.status(402).json({
             err:1,
             httpStatus: 402,
-            message: (!cliente)? "Cliente Id invalid" : "Bad Arguments, any field sended",
+            message: (!producto)? "Producto Id invalid" : "Bad Arguments, any field sended",
         });    
     };
+    
     if(Object.keys(extraFields).length > 0){
         return res.status(402).json({
             err: 1,
@@ -133,19 +133,16 @@ async function clientePatch(req,res,next){
     };
     
     const updatedFields = {};
-    if (nombres) updatedFields.nombres = nombres;
-    if (apellidos) updatedFields.apellidos = apellidos;
-    if (direccion) updatedFields.direccion = direccion;
-    if (telefono) updatedFields.telefono = telefono;
-    if (email) updatedFields.email = email;
-  
+    if (nombre) updatedFields.nombre = nombre;
+    if (descripcion) updatedFields.descripcion = descripcion;
+    if (precio) updatedFields.precio = precio;
     
-    cliente.update(updatedFields)
+    producto.update(updatedFields)
     .then(resultOf =>{
         res.status(200).json({
             error:0,
             status:200,
-            msg:"Cliente actualizado correctamente",
+            msg:"Producto actualizado correctamente",
             data:resultOf
         });
     })
@@ -157,7 +154,7 @@ async function clientePatch(req,res,next){
   
 
 module.exports =  {
-    clienteGet, clientePost, clienteDeleteMany,
-    clientePatch, clienteDeleteOne
+    productoGet, productoPost, productoDeleteMany,
+    productoPatch, productoDeleteOne
 };
 

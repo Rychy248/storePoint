@@ -4,9 +4,8 @@
  * @param { express.app } app the core app
  */
 function urlFunction(app) {
-    
-    app.use("/articles", require("./articleRouter")());
     app.use("/cliente", require("./clienteRouter")());
+    app.use("/producto", require("./productoRouter")());
 };
 
 module.exports = urlFunction;
