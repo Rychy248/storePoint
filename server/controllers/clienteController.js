@@ -29,7 +29,7 @@ function clienteGet(req,res,next) {
             email: "yohana@gmail.com",
         },
         {
-            id: "abc125",
+            id: "abc126",
             nombres: "Willi",
             apellidos: "Gómez",
             direccion: "Santa Cruz",

@@ -9,8 +9,9 @@ const
     cors = require('cors'),
 // general config
     dbSettings = {
-        dbName :"wikiDB",
-        dbPort :"27017"
+        dbName :"storepoint",
+        dbHost: "127.0.0.1",
+        dbDialect: "mysql" 
     },
     appSettings = {
         port:3000

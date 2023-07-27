@@ -1,31 +1,44 @@
-// /**
-//  * 
-//  * @param { express.app } app 
-//  */
-// function dbConnect(app) {
-//     // IMPORT settings
-//     const { 
-//         appSettings:{
-//             port:appPort
-//         },
-//         dbSettings : {
-//             dbName,
-//             dbPort
-//         }
-//     } = require("./config");
+/**
+ * 
+ * @param { express.app } app 
+ */
+function dbConnect(app) {
+    // IMPORT settings
+    const { 
+        appSettings:{
+            port:appPort
+        },
+        dbSettings : {
+            dbName,
+            dbHost,
+            dbDialect
+        }
+    } = require("./config");
 
-//     // thirdy module; mongoose 
-//     const mongoose = require("mongoose");
+    // thirdy module; mongoose 
+    const Sequelize = require("sequelize");
+    const sequelize = new Sequelize(
+    dbName,
+    `${process.env.dbUser}`,
+    `${process.env.dbPassword}`,
+    {
+        host: dbHost,
+        dialect: dbDialect
+    }
+    );
 
-//     // Conecting to DB
-//     mongoose.connect(`mongodb://127.0.0.1:${dbPort}/${dbName}`)
-//     .then((msg)=>{
-//         // CONNECTED MESSAGE
-//         console.log(`MongoDB connected with Mongoose at port ${dbPort} to the ${dbName}`);
-//     })
-//     .catch((err)=>{
-//         console.log(err);
-//     });
-// };
+    sequelize.authenticate()
+    .then(() => {
+        console.log('Connection TO MYSQL has been established successfully.');
+        
+        app.listen(appPort,(()=>{
+            console.log(`App serverd at port ${appPort}`);
+        }));
 
-// module.exports = dbConnect;
+    }).catch((error) => {
+        console.error('Unable to connect to the database: ', error);
+    });
+
+};
+
+module.exports = dbConnect;
