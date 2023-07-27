@@ -1,41 +1,39 @@
+import axios from 'axios';
 import { useState } from 'react';
 
-const ClienteForm = () => {
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [direccion, setDireccion] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [email, setEmail] = useState('');
+const VentaForm = () => {
+  const [clienteId, setClienteId] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [productos, setProductos] = useState([]);
+  const [totalVenta, setTotalVenta] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Petición al backend para agregar un nuevo cliente a la API.
-    // ...
+
+    // Realizar una petición POST al endpoint /api/ventas para crear una nueva venta
+    const nuevaVenta = {
+      cliente_id: clienteId,
+      fecha,
+      total: totalVenta,
+    };
+
+    axios.post('/api/ventas', nuevaVenta)
+      .then(response => console.log(response.data))
+      .catch(error => console.error(error));
   };
 
+  // Otras funciones para manejar la selección de productos y calcular el total de la venta
+
   return (
-    <div className="container">
-      <h2>Agregar Cliente</h2>
+    <div className="container mt-4">
+      <h2>Nueva Venta</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <input type="text" className="form-control" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <input type="text" className="form-control" placeholder="Apellido" value={apellido} onChange={(e) => setApellido(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <input type="text" className="form-control" placeholder="Dirección" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
-        </div>
-        <div className="mb-3">
-          <input type="text" className="form-control" placeholder="Teléfono" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
-        </div>
-        <div className="mb-3">
-          <input type="email" className="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <button type="submit" className="btn btn-primary">Agregar</button>
+        {/* Formulario para seleccionar cliente y productos */}
+        {/* ... */}
+        <button type="submit" className="btn btn-primary">Guardar Venta</button>
       </form>
     </div>
   );
 };
 
-export default ClienteForm;
+export default VentaForm;
