@@ -1,93 +1,44 @@
 
 
-const { cliente } = require("../models/models");
+const { Cliente } = require("../models/models");
 const { MyError, defaultError } = require("../utils/customErrors");
 
-function clienteGet(req,res,next) {
-    let clientes = [
-        {
-            id: "abc123",
-            nombres: "Yeison",
-            apellidos: "Gómez",
-            direccion: "Joyabaj",
-            telefono: "32568978",
-            email: "yeison@gmail.com",
-        },
-        {
-            id: "abc124",
-            nombres: "Ricardo",
-            apellidos: "Hernández",
-            direccion: "San Andrés Sajcabajá",
-            telefono: "42090991",
-            email: "ricardo@gmail.com",
-        },
-        {
-            id: "abc125",
-            nombres: "Yohana",
-            apellidos: "Gómez",
-            direccion: "Santa Cruz",
-            telefono: "78458945",
-            email: "yohana@gmail.com",
-        },
-        {
-            id: "abc126",
-            nombres: "Willi",
-            apellidos: "Gómez",
-            direccion: "Santa Cruz",
-            telefono: "78458945",
-            email: "willi@gmail.com",
-        }
-    ]
-    // const query = (req.params.clienteId) ? {_id : req.params.clienteId} : {};
-    
-    // cliente.read(query)
-    // .then((response) => {
-    //     res.json({
-    //         error:0,
-    //         status:200,
-    //         data:response,
-    //     });
-    // })
-    // .catch((err) => {
-    //     if(err.name == "CastError" && query._id ){
-    //         res.json({
-    //             error:"InvalidId",
-    //             status:200,
-    //             msg:"cliente not found, invalid ID",
-    //             data: [],
-    //         });
-    //     }else{
-    //         res.json(defaultError(err));
-    //     };
-    // });
+async function clienteGet(req,res,next) {
+    let queryParams = {}
+
     console.log(req.params.clienteId);
+    
     if (req.params.clienteId){
-        let data = "User not found";
-
-        clientes.forEach(cliente => {
-            if (cliente.id === req.params.clienteId){
-                data = cliente;
-            };
-        });
-
-        res.json({
-            httpStatus: 200,
-                message: "ServerMessage",
-                data: data
-        });
-    }else{
-        res.json({
-            httpStatus: 200,
-                message: "ServerMessage",
-                data: clientes
-        });
+        queryParams = {
+            where: {
+              id: req.params.clienteId
+        }};
     };
 
+    Cliente.findAll(queryParams)
+    .then(clientes =>{
+        console.log(clientes);
+        let msgToSend = (req.params.clienteId && clientes.length == 0) ? 
+        "Cliente no encontrado": (!req.params.clienteId && clientes.length == 0) ? 
+        "Ningún cliente se ha ingresado" : (req.params.clienteId) ?
+        "Cliente econtrado": "Todos los clientes retornados";
+            
+        res.json({
+            error:0,
+            status:200,
+            msg:msgToSend,
+            data:clientes
+        });
+
+    })
+    .catch(err=>{
+        res.json(defaultError(err));
+    });
 };
 
 async function clientePost(req, res, next){
     
-    cliente.create({
+    Cliente.create({
         nombres: req.body.nombres,
         apellidos: req.body.apellidos,
         direccion: req.body.direccion,
@@ -161,42 +112,6 @@ function clienteDeleteOne(req, res, next){
 });
 };
 
-async function clientePut(req, res, next) {
-
-    // const [conditions, document] = [{_id : req.params.clienteId} , req.body];
-    // let toSend = {
-    //     error:0,
-    //     status:200,
-    // };
-
-    // try {            
-    //     if (Object.keys(document).length == 0){
-    //         throw(new MyError("No title or content sended","EmptyData"));
-    //     };
-
-    //     let response = await cliente.put(conditions, document);
-        
-    //     toSend.msg = (response.matchedCount > 0) ? "cliente updated successufully" : "Any cliente matched, any change did";
-    //     toSend.data = response;
-    // } catch (error) {
-    //     if(error.name == "CastError" && query._id ){
-    //         toSend.error = "InvalidId";
-    //         toSend.msg = "cliente not found, invalid ID";
-    //     }else{
-    //         Object.assign(toSend,defaultError(error)); // asign the default atributes to Send
-    //     };
-    // };
-
-    // res.json(toSend);
-    res.json({
-        httpStatus: 200,
-        message: "ServerMessage",
-        data: [
-            {1:"cliente PUT reached"}
-        ]
-    });
-};
-
 function clientePatch(req,res,next){
     // const [conditions, updates] = [{_id : req.params.clienteId} , req.body];
     
@@ -238,6 +153,6 @@ function clientePatch(req,res,next){
 
 module.exports =  {
     clienteGet, clientePost, clienteDeleteMany,
-    clientePut, clientePatch, clienteDeleteOne
+    clientePatch, clienteDeleteOne
 };
 

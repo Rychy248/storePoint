@@ -10,7 +10,7 @@ function routerFunction() {
     // controller import
     const { 
         clienteGet, clientePost, clienteDeleteMany,
-        clientePut, clientePatch, clienteDeleteOne
+        clientePatch, clienteDeleteOne
     
     } = require("../controllers/clienteController");
 
@@ -23,7 +23,6 @@ function routerFunction() {
         // particular id
     clienteRouter.route("/:clienteId")
         .get(clienteGet)
-        .put(clientePut)
         .patch(clientePatch)
         .delete(clienteDeleteOne)
     ;   

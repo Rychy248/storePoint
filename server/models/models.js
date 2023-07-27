@@ -1,7 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require("../db");
 
-const cliente = sequelize.define('cliente', {
+const Cliente = sequelize.define('cliente', {
     // Model attributes are defined here
     id:{
         type: DataTypes.INTEGER,
@@ -32,7 +32,7 @@ const cliente = sequelize.define('cliente', {
     // Other model options go here
 });
 
-const producto = sequelize.define('producto', {
+const Producto = sequelize.define('producto', {
     // Model attributes are defined here
     id:{
         type: DataTypes.INTEGER,
@@ -52,7 +52,7 @@ const producto = sequelize.define('producto', {
     }
 });
 
-const venta = sequelize.define('venta', {
+const Venta = sequelize.define('venta', {
     // Model attributes are defined here
     id:{
         type: DataTypes.INTEGER,
@@ -69,7 +69,7 @@ const venta = sequelize.define('venta', {
     },
 });
 
-const ventaProducto = sequelize.define('ventaProducto', {
+const VentaProducto = sequelize.define('ventaProducto', {
     // Model attributes are defined here
     id:{
         type: DataTypes.INTEGER,
@@ -87,18 +87,18 @@ const ventaProducto = sequelize.define('ventaProducto', {
 });
 
 // asociation
-cliente.hasMany(venta);
-venta.belongsTo(cliente,{
+Cliente.hasMany(Venta);
+Venta.belongsTo(Cliente,{
     foreignKey: 'clienteId'
 });
 
-venta.hasMany(ventaProducto);
-ventaProducto.belongsTo(venta,{
+Venta.hasMany(VentaProducto);
+VentaProducto.belongsTo(Venta,{
     foreignKey: 'ventaId'
 });
 
-producto.hasMany(ventaProducto);
-ventaProducto.belongsTo(producto,{
+Producto.hasMany(VentaProducto);
+VentaProducto.belongsTo(Producto,{
     foreignKey: 'productoId'
 });
 
@@ -110,4 +110,4 @@ sequelize.sync().then(() => {
 });
 
 
-module.exports = { cliente, producto, venta, ventaProducto}
+module.exports = { Cliente, Producto, Venta, VentaProducto}
