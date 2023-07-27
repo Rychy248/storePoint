@@ -3,8 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const ClienteForm = () => {
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
+  const [nombres, setNombres] = useState('');
+  const [apellidos, setApellidos] = useState('');
   const [direccion, setDireccion] = useState('');
   const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
@@ -14,14 +14,14 @@ const ClienteForm = () => {
 
     // Realizar una petición POST al endpoint /api/clientes para crear un nuevo cliente
     const nuevoCliente = {
-      nombre,
-      apellido,
+      nombres,
+      apellidos,
       direccion,
       telefono,
       email,
     };
 
-    axios.post('/api/clientes', nuevoCliente)
+    axios.post('http://localhost:3000/cliente', nuevoCliente)
       .then(response => console.log(response.data))
       .catch(error => console.error(error));
   };
@@ -36,8 +36,8 @@ const ClienteForm = () => {
             type="text"
             className="form-control"
             id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            value={nombres}
+            onChange={(e) => setNombres(e.target.value)}
           />
         </div>
         <div className="form-group">
@@ -46,8 +46,8 @@ const ClienteForm = () => {
             type="text"
             className="form-control"
             id="apellido"
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
+            value={apellidos}
+            onChange={(e) => setApellidos(e.target.value)}
           />
         </div>
         <div className="form-group">

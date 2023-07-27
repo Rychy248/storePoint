@@ -1,0 +1,11 @@
+:root{
+    --primary: #d22276;
+    --secondary: #0b0152;
+    --tercary: #150390;
+    --light: #fff;
+    --dark: #333;
+  }
+
+.navbar{
+    background-color: var(--primary);
+}
