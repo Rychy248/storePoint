@@ -31,4 +31,4 @@ app.use(cors({origin: allowedOrigins}));
 app.use(bodyParser.json());
 
 
-module.exports = { express, app, dbSettings, appSettings}
+module.exports = { app, dbSettings, appSettings}

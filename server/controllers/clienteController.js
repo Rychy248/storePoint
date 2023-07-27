@@ -1,5 +1,6 @@
 
-// const { cliente } = require("../models/clienteModel");
+
+const { cliente } = require("../models/models");
 const { MyError, defaultError } = require("../utils/customErrors");
 
 function clienteGet(req,res,next) {
@@ -84,29 +85,27 @@ function clienteGet(req,res,next) {
 
 };
 
-function clientePost(req, res, next){
-    // cliente.create({
-    //     title:req.body.title,
-    //     content:req.body.content
-    // })
-    // .then((response)=>{
-    //     res.json({
-    //         error:0,
-    //         status:200,
-    //         msg:"Succesfull posted",
-    //         data:response
-    //     });
-    // })
-    // .catch((err) => {
-    //     res.json(defaultError(err));
-    // });
-    res.json({
-        httpStatus: 200,
-        message: "ServerMessage",
-        data: [
-        {1:"cliente POST reached"}
-    ]
-});
+async function clientePost(req, res, next){
+    
+    cliente.create({
+        nombres: req.body.nombres,
+        apellidos: req.body.apellidos,
+        direccion: req.body.direccion,
+        telefono: req.body.telefono,
+        email: req.body.email
+    })
+    .then((cliente)=>{
+        res.json({
+            error:0,
+            status:200,
+            msg:"Cliente creado correctamente",
+            data:cliente
+        });
+    })
+    .catch((err) => {
+        res.json(defaultError(err));
+    });
+    
 };
 
 function clienteDeleteMany(req, res, next){
