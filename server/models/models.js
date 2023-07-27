@@ -49,6 +49,10 @@ const Producto = sequelize.define('producto', {
     },
     precio:{
         type: DataTypes.DECIMAL(6,2),
+    },
+    stock:{
+        type: DataTypes.INTEGER,
+        defaultValue: 1000
     }
 });
 
@@ -84,6 +88,10 @@ const VentaProducto = sequelize.define('ventaProducto', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    cantidad:{
+        type: DataTypes.INTEGER,
+        defaultValue: 1 
+    }
 });
 
 // asociation

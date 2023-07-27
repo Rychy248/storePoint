@@ -37,6 +37,7 @@ async function productoPost(req, res, next){
         nombre: req.body.nombre,
         descripcion: req.body.descripcion,
         precio: req.body.precio,
+        stock: req.body.stock,
     })
     .then((producto)=>{
         res.json({
@@ -108,9 +109,9 @@ function productoDeleteOne(req, res, next){
 };
 
 async function productoPatch(req,res,next){
-    const validFields = ["nombre", "descripcion", "precio"];
+    const validFields = ["nombre", "descripcion", "precio","stock"];
     const producto = await Producto.findByPk(req.params.productoId);
-    const {nombre, descripcion, precio, ... extraFields} = req.body; 
+    const {nombre, descripcion, precio, stock, ... extraFields} = req.body; 
     
     if((!nombre && !descripcion && !precio) || !producto){
         return res.status(402).json({
@@ -136,6 +137,7 @@ async function productoPatch(req,res,next){
     if (nombre) updatedFields.nombre = nombre;
     if (descripcion) updatedFields.descripcion = descripcion;
     if (precio) updatedFields.precio = precio;
+    if (stock) updatedFields.stock = stock;
     
     producto.update(updatedFields)
     .then(resultOf =>{
