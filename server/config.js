@@ -18,7 +18,7 @@ const
 // create app
     app = express(),
 // Allowed origin for cors util
-    allowedOrigins = ["http://127.0.0.1:5500","http://127.0.0.1:*","http://127.0.0.1:5173", "http://localhost:8080/"];
+    allowedOrigins = ["http://127.0.0.1:5500","*","http://127.0.0.1:5173", "http://localhost:8080/"];
 ;
 // -------- MIDLEWARE
 // app.set("views",path.join(__dirname,"views"));
