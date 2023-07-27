@@ -1,5 +1,6 @@
 
 
+const { or } = require("sequelize");
 const { Cliente } = require("../models/models");
 const { MyError, defaultError } = require("../utils/customErrors");
 
@@ -112,45 +113,57 @@ function clienteDeleteOne(req, res, next){
 });
 };
 
-function clientePatch(req,res,next){
-    // const [conditions, updates] = [{_id : req.params.clienteId} , req.body];
+async function clientePatch(req,res,next){
+    console.log(req.body)
     
-    // if (Object.keys(updates).length == 0){
-    //     res.json(
-    //         defaultError(new MyError("No title or content sended","EmptyData"))
-    //     );
-    // }else{
-    //     cliente.patch(conditions, updates)
-    //     .then((response)=>{
-    //         res.json({
-    //             error:0,
-    //             status:200,
-    //             msg : (response.matchedCount > 0) ? "cliente updated successufully" : "Any cliente matched, any change did",
-    //             data : response,
-    //         });
-    //     })
-    //     .catch((err)=>{
-    //         if(err.name == "CastError" && query._id ){
-    //             res.json({
-    //                 error:"InvalidId",
-    //                 status:200,
-    //                 msg :"cliente not found, invalid ID",
-    //                 data : response,
-    //             });
-    //         }else{
-    //             res.json(defaultError(err));
-    //         };
-    //     });
-    // };
+    const validFields = ["nombres", "apellidos", "direccion", "telefono", "email"];
+    const cliente = await Cliente.findByPk(req.params.clienteId);
+    const {nombres, apellidos, direccion, telefono, email, ... extraFields} = req.body; 
     
-    res.json({
-        httpStatus: 200,
-        message: "ServerMessage",
-        data: [
-            {1:"cliente PATCH reached"}
-        ]
+    if((!nombres && !apellidos && !direccion && !telefono && !email) || !cliente){
+        return res.status(402).json({
+            err:1,
+            httpStatus: 402,
+            message: (!cliente)? "Cliente Id invalid" : "Bad Arguments, any field sended",
+        });    
+    };
+    console.log(extraFields);
+    if(Object.keys(extraFields).length > 0){
+        return res.status(402).json({
+            err: 1,
+            errDetails: {
+              badlyFieldsSended: extraFields,
+              validFields: validFields.join(", "),
+            },
+            httpStatus: 402,
+            message: "Bad params Names!",
+          });
+    };
+    
+    const updatedFields = {};
+    if (nombres) updatedFields.nombres = nombres;
+    if (apellidos) updatedFields.apellidos = apellidos;
+    if (direccion) updatedFields.direccion = direccion;
+    if (telefono) updatedFields.telefono = telefono;
+    if (email) updatedFields.email = email;
+  
+    
+    cliente.update(updatedFields)
+    .then(resultOf =>{
+        console.log(resultOf);
+        res.status(200).json({
+            error:0,
+            status:200,
+            msg:"Cliente actualizado correctamente",
+            data:resultOf
+        });
+    })
+    .catch(err=>{
+        res.json(defaultError(err));
     });
+    
 };
+  
 
 module.exports =  {
     clienteGet, clientePost, clienteDeleteMany,
