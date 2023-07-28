@@ -118,4 +118,4 @@ sequelize.sync().then(() => {
 });
 
 
-module.exports = { Cliente, Producto, Venta, VentaProducto}
+module.exports = { Cliente, Producto, Venta, VentaProducto, sequelize}
