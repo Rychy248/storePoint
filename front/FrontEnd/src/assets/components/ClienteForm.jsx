@@ -96,7 +96,7 @@ const ClienteForm = () => {
 
       axios.post('http://localhost:3000/cliente', nuevoCliente)
         .then(response => {
-          console.log(response.data);
+          // console.log(response.data);
           // Establecer la respuesta del servidor y mostrar el mensaje de éxito
           setRespuesta(response.data.msg);
           setEsError(false);
@@ -132,7 +132,7 @@ const ClienteForm = () => {
       {mostrarMensaje && <div className={`alert ${esError ? 'alert-danger' : 'alert-success'}`}>{respuesta}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nombre">Nombre</label>
+          <label htmlFor="nombre">Nombres</label>
           <input
             type="text"
             className={`form-control ${errores.nombres && 'is-invalid'}`}
@@ -144,7 +144,7 @@ const ClienteForm = () => {
             {errores.nombres && <div className="invalid-feedback">{errores.nombres}</div>}
         </div>
         <div className="form-group">
-          <label htmlFor="apellido">Apellido</label>
+          <label htmlFor="apellido">Apellidos</label>
           <input
             type="text"
             className={`form-control ${errores.apellidos && 'is-invalid'}`}
