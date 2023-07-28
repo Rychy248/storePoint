@@ -1,16 +1,27 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import EditProductosForm from './EditProductosForm';
 
 const ProductosList = () => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    // Realizar una petición GET al endpoint /api/productos para obtener la lista de productos
-    axios.get('/api/productos')
-      .then(response => setProductos(response.data))
-      .catch(error => console.error(error));
+    fetch("http://localhost:3000/producto", {
+        method: "GET",
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => setProductos(data.data))
+    .catch(error => console.error(error));
   }, []);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleEditClick = (product) => {
+    setSelectedProduct(product);
+  };
 
   return (
     <div className="container mt-4">
@@ -19,21 +30,29 @@ const ProductosList = () => {
       <table className="table table-striped">
         <thead>
           <tr>
+            <th>Edit</th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Precio</th>
+            <th>Stock</th>
           </tr>
         </thead>
         <tbody>
           {productos.map(producto => (
             <tr key={producto.id}>
+              <td>
+              <button onClick={() => handleEditClick(producto)}>Editar</button>
+              </td>
               <td>{producto.nombre}</td>
               <td>{producto.descripcion}</td>
               <td>{producto.precio}</td>
+              <td>{producto.stock}</td>
+
             </tr>
           ))}
         </tbody>
       </table>
+      {selectedProduct && <EditProductosForm product={selectedProduct} />}
     </div>
   );
 };
