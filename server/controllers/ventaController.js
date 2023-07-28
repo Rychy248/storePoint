@@ -77,12 +77,12 @@ async function ventaGet(req,res,next) {
     
 };
 
+/**
+ * Need in the req.body to params
+ * clienteId as an string, and
+ * productos as an array of Obj [{productoId, cantidad}]
+ */
 async function ventaPost(req, res, next){
-    // req.body.clienteId = clienteId
-    // req.body.clienteId
-
-    //req.body.productos = [{productoId:productoId,cantidad:cantidad},]
-    // req.body.productos
     const { clienteId, productos, ... extraFields} = req.body;
     const validFields = ["clienteId", "productos"];
 
@@ -116,37 +116,50 @@ async function ventaPost(req, res, next){
         });    
     };
     // valid cliente
-    const cliente = Cliente.findByPk(clienteId);
+    const cliente = await Cliente.findByPk(clienteId);
     if(!cliente){
         return res.status(402).json({
-            error:0,
+            error:1,
             status:402,
             msg:"Cliente Id, Enviado no es valido"
         });
     };
-    //validar productos
+    //valid productos
     for (let i = 0; i < productos.length; i++) {
-        const producto = Producto.findByPk(productos[i].productoId);
+        const producto = await Producto.findByPk(productos[i].productoId);
+        if (!producto || !productos[i].cantidad) {
+            return res.status(402).json({
+                error:1,
+                status:402,
+                msg:(producto)? "Cantidad de producto no enviada":`Producto Id enviado no validdo (ID Searched for: ${productos[i].productoId})`
+            }); 
+        };
     }
+
+    // ALL RIGHT, GO TO SAVE THE DATA---------------
     // First, we start a transaction from your connection and save it into a variable
     const transaction = await sequelize.transaction();
 
     try {
         // Then, we do some calls passing this transaction as an option:
+        //create the Venta
         const venta = await Venta.create({
             clienteId: req.body.clienteId,
         }, { transaction: transaction });
         
-        let productos = [];
+        //crea los datos para la tabla VentaProducto
+        let productosToSave = [];
         req.body.productos.forEach(producto => {
-            productos.push({
+            productosToSave.push({
                 ventaId:venta.id,
                 productoId:producto.productoId,
                 cantidad:producto.cantidad
             });
         });
 
-        const ventaProductos = await VentaProducto.bulkCreate( productos, { transaction: transaction });
+        // Genera Registros
+        const ventaProductos = await VentaProducto.bulkCreate( productosToSave, { transaction: transaction });
+        
         // If the execution reaches this line, no errors were thrown.
         // We commit the transaction.   
         await transaction.commit();
