@@ -9,6 +9,7 @@ import VentasList from './assets/components/VentasList';
 import VentaForm from './assets/components/VentaForm';
 import AgregarProductoForm from './assets/components/AgregarProductoForm';
 import ProductosList from './assets/components/ProductosList';
+import EditClienteForm from './assets/components/EditClienteForm';
 
 const App = () => {
   return (
@@ -21,6 +22,8 @@ const App = () => {
 
           {/* Ruta para agregar un nuevo cliente */}
           <Route exact path="/agregar-cliente" component={ClienteForm} />
+
+          <Route path="/actualizar-cliente/:id" component={EditClienteForm} />
 
           <Route exact path="/productos" component={ProductosList} />
 
