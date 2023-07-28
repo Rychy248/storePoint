@@ -65,7 +65,7 @@ async function ventaGet(req,res,next) {
         "Ningúna venta se ha ingresado" : (req.params.ventaId) ?
         "Venta econtrada": "Todos las ventas retornados";
             
-        return res.json({
+        return res.status(200).json({
             error:0,
             status:200,
             msg:msgToSend,
@@ -78,14 +78,56 @@ async function ventaGet(req,res,next) {
 };
 
 async function ventaPost(req, res, next){
-    console.log(req.body.clienteId);
-    console.log(req.body.productos);
     // req.body.clienteId = clienteId
     // req.body.clienteId
 
     //req.body.productos = [{productoId:productoId,cantidad:cantidad},]
     // req.body.productos
+    const { clienteId, productos, ... extraFields} = req.body;
+    const validFields = ["clienteId", "productos"];
 
+    //VALIDATIONS
+    //any extra field sended
+    if(Object.keys(extraFields).length > 0){
+        return res.status(402).json({
+            error:1,
+            status:402,
+            msg:"Bad arguments!",
+            errDetails: {
+                badlyFieldsSended: extraFields,
+                validFields: validFields.join(", "),
+              },
+        });
+    };
+    //all fields sended
+    if(!clienteId || !productos){
+        return res.status(402).json({
+            err:1,
+            httpStatus: 402,
+            message: "Bad Arguments, missed some fild",
+        });    
+    };
+    //min one product
+    if(productos.length == 0){
+        return res.status(402).json({
+            err:1,
+            httpStatus: 402,
+            message: "Any Product Sended",
+        });    
+    };
+    // valid cliente
+    const cliente = Cliente.findByPk(clienteId);
+    if(!cliente){
+        return res.status(402).json({
+            error:0,
+            status:402,
+            msg:"Cliente Id, Enviado no es valido"
+        });
+    };
+    //validar productos
+    for (let i = 0; i < productos.length; i++) {
+        const producto = Producto.findByPk(productos[i].productoId);
+    }
     // First, we start a transaction from your connection and save it into a variable
     const transaction = await sequelize.transaction();
 

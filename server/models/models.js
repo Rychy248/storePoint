@@ -48,7 +48,7 @@ const Producto = sequelize.define('producto', {
         allowNull: true
     },
     precio:{
-        type: DataTypes.DECIMAL(6,2),
+        type: DataTypes.DECIMAL(8,2),
     },
     stock:{
         type: DataTypes.INTEGER,
