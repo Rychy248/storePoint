@@ -58,12 +58,19 @@ const VentasList = () => {
                 <ul>
                   {venta.productos.map((producto, index) => (
                     <li key={index}>
-                      Q{parseFloat(producto.producto.precio).toFixed(2)}
+                      Q{parseFloat(producto.producto.precio).toLocaleString("en-US", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}                    
                     </li>
                   ))}
                 </ul>
               </td>
-              <td>Q{venta.totalVenta.toFixed(2)}</td>
+              <td>Q{venta.totalVenta.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </td>            
             </tr>
           ))}
         </tbody>
