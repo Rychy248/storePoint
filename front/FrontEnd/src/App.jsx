@@ -1,15 +1,13 @@
-// App.js
 
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './assets/components/Navbar';
-import ClientesList from './assets/components/ClientesList';
-import ClienteForm from './assets/components/ClienteForm';
-import VentasList from './assets/components/VentasList';
-import VentaForm from './assets/components/VentaForm';
-import AgregarProductoForm from './assets/components/AgregarProductoForm';
-import ProductosList from './assets/components/ProductosList';
-import EditClienteForm from './assets/components/EditClienteForm';
+import { ClientesList } from './assets/components/cliente/ClientesList';
+import { ClienteForm } from './assets/components/cliente/ClienteForm';
+import EditClienteForm from './assets/components/cliente/EditClienteForm';
+import VentasList from './assets/components/venta/VentasList';
+import ProductosList from './assets/components/producto/ProductosList';
+import AgregarProductoForm from './assets/components/producto/AgregarProductoForm';
+import VentaForm from './assets/components/venta/VentaForm';
 
 const App = () => {
   return (
@@ -17,23 +15,22 @@ const App = () => {
       <div>
         <Navbar />
         <Switch>
-          {/* Ruta para la lista de clientes */}
           <Route exact path="/clientes" component={ClientesList} />
 
-          {/* Ruta para agregar un nuevo cliente */}
           <Route exact path="/agregar-cliente" component={ClienteForm} />
 
-          <Route path="/actualizar-cliente/:id" component={EditClienteForm} />
+          <Route path="/actualizar-cliente" component={EditClienteForm} />
+
+          <Route exact path="/" component={VentasList} />
+
+          <Route exact path="/ventas" component={VentasList} />
+
+          <Route exact path="/nueva-venta" component={VentaForm} />
 
           <Route exact path="/productos" component={ProductosList} />
 
           <Route exact path="/agregar-producto" component={AgregarProductoForm} />
 
-          {/* Ruta para la lista de ventas */}
-          <Route exact path="/ventas" component={VentasList} />
-
-          {/* Ruta para agregar una nueva venta */}
-          <Route exact path="/nueva-venta" component={VentaForm} />
         </Switch>
       </div>
     </Router>

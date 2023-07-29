@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { EditVentaForm } from './EditVentaForm';
 
 const VentasList = () => {
   const [ventas, setVentas] = useState([]);
@@ -17,20 +16,13 @@ const VentasList = () => {
       .catch(error => console.error(error));
   }, []);
 
-  const [selectedVenta, setSelectedVenta] = useState(null);
-
-  const handleEditClick = (venta) => {
-    setSelectedVenta(venta);
-  };
-
   return (
     <div className="container mt-4">
       <h2>Lista de Ventas</h2>
-      <Link to="/nueva-venta" className="btn btn-primary float-end">Agregar Venta</Link>
+      <Link to="/nueva-venta" className="btn btn-info float-end">Agregar Venta</Link>
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Edit</th>
             <th>Fecha</th>
             <th>Cliente</th>
             <th>Producto</th>
@@ -42,9 +34,6 @@ const VentasList = () => {
         <tbody>
           {ventas.map(venta => (
             <tr key={venta.id}>
-              <td>
-                <button onClick={() => handleEditClick(venta)}>Editar</button>
-              </td>
               <td>{new Date(venta.fecha).toLocaleString()}</td>
               <td>{venta.cliente.nombres} {venta.cliente.apellidos}</td>
               <td>
@@ -79,7 +68,6 @@ const VentasList = () => {
           ))}
         </tbody>
       </table>
-      {selectedVenta && <EditVentaForm venta={selectedVenta} />}
     </div>
   );
 };

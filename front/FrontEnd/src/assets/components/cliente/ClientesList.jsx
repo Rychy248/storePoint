@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import EditClienteForm from './EditClienteForm';
 
-const ClientesList = () => {
+export const ClientesList = () => {
   const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
@@ -26,11 +26,11 @@ const ClientesList = () => {
   return (
     <div className="container mt-4">
       <h2>Lista de Clientes</h2>
-      <Link to="/agregar-cliente" className="btn btn-primary float-end">Agregar Cliente</Link>
+      <Link to="/agregar-cliente" className="btn btn-info float-end">Agregar Cliente</Link>
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Edit</th>
+            <th>Editar</th>
             <th>Nombres</th>
             <th>Apellidos</th>
             <th>Dirección</th>
@@ -42,7 +42,7 @@ const ClientesList = () => {
           {clientes.map(cliente => (
             <tr key={cliente.id}>
               <td>
-              <button onClick={() => handleEditClick(cliente)}>Editar</button>
+              <button onClick={() => handleEditClick(cliente)} className='btn btn-warning'>Editar</button>
               </td>
               <td>{cliente.nombres}</td>
               <td>{cliente.apellidos}</td>
@@ -57,5 +57,3 @@ const ClientesList = () => {
     </div>
   );
 };
-
-export default ClientesList;

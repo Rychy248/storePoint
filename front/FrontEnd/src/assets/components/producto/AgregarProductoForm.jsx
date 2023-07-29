@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-const AgregarProductoForm = () => {
+export const AgregarProductoForm = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState('');
@@ -85,7 +86,6 @@ const AgregarProductoForm = () => {
     // Realizar la petición POST a la API para agregar el producto
     axios.post('http://localhost:3000/producto', nuevoProducto)
     .then(response => {
-      // console.log(response.data);
       // Establecer la respuesta del servidor y mostrar el mensaje de éxito
       setRespuesta(response.data.msg);
       setEsError(false);
@@ -116,6 +116,9 @@ const AgregarProductoForm = () => {
 
   return (
     <div className="container mt-4">
+      <Link to="/productos" className="btn btn-outline-dark m-2 ">
+        <i className="fas fa-arrow-left "></i> Regresar
+      </Link>
       <h2>Agregar Producto</h2>
       {mostrarMensaje && <div className={`alert ${esError ? 'alert-danger' : 'alert-success'}`}>{respuesta}</div>}
       <form onSubmit={handleSubmit}>
@@ -171,7 +174,7 @@ const AgregarProductoForm = () => {
           />
             {errores.stock && <div className="invalid-feedback">{errores.stock}</div>}
         </div>
-        <button type="submit" className="btn btn-primary">Agregar Producto</button>
+        <button type="submit" className="btn btn-info">Agregar Producto</button>
       </form>
     </div>
   );

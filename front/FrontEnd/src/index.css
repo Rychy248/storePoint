@@ -1,11 +1,27 @@
 :root{
-    --primary: #d22276;
-    --secondary: #0b0152;
-    --tercary: #150390;
+    --primary: #9DB2BF;
+    --secondary: #526D82;
+    --tercary: #27374D;
     --light: #fff;
     --dark: #333;
   }
 
+
 .navbar{
     background-color: var(--primary);
 }
+.nav-link{
+  cursor: pointer;
+  border: 2px solid black;
+  border-radius: 25%;
+  margin: 5px;
+  width: fit-content;
+  background-color: var(--light);
+  color: var(--dark);
+}
+.nav-link:focus,
+.nav-link:active{
+  background-color: var(--tercary);
+  color: var(--light);
+}
+

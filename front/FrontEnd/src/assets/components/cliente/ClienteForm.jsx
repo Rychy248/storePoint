@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-const ClienteForm = () => {
+export const ClienteForm = () => {
   const [nombres, setNombres] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [direccion, setDireccion] = useState('');
@@ -96,8 +97,7 @@ const ClienteForm = () => {
 
       axios.post('http://localhost:3000/cliente', nuevoCliente)
         .then(response => {
-          // console.log(response.data);
-          // Establecer la respuesta del servidor y mostrar el mensaje de éxito
+        
           setRespuesta(response.data.msg);
           setEsError(false);
           setMostrarMensaje(true);
@@ -128,6 +128,9 @@ const ClienteForm = () => {
 
   return (
     <div className="container mt-4 ">
+      <Link to="/clientes" className="btn btn-outline-dark m-2 ">
+        <i className="fas fa-arrow-left "></i> Regresar
+      </Link>
       <h2>Agregar Cliente</h2>
       {mostrarMensaje && <div className={`alert ${esError ? 'alert-danger' : 'alert-success'}`}>{respuesta}</div>}
       <form onSubmit={handleSubmit}>
@@ -196,10 +199,8 @@ const ClienteForm = () => {
           />
             {errores.email && <div className="invalid-feedback">{errores.email}</div>}
         </div>
-        <button type="submit" className="btn btn-primary mt-2">Guardar</button>
+        <button type="submit" className="btn btn-info mt-2">Guardar</button>
       </form>
     </div>
   );
 };
-
-export default ClienteForm;

@@ -25,12 +25,12 @@ const ProductosList = () => {
 
   return (
     <div className="container mt-4">
-      <Link to="/agregar-producto" className="btn btn-primary float-end">Agregar Producto</Link> {/* Botón para agregar producto */}
+      <Link to="/agregar-producto" className="btn btn-info float-end">Agregar Producto</Link> {/* Botón para agregar producto */}
       <h2>Lista de Productos</h2>
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Edit</th>
+            <th>Editar</th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Precio</th>
@@ -41,7 +41,7 @@ const ProductosList = () => {
           {productos.map(producto => (
             <tr key={producto.id}>
               <td>
-              <button onClick={() => handleEditClick(producto)}>Editar</button>
+              <button onClick={() => handleEditClick(producto)} className='btn btn-warning'>Editar</button>
               </td>
               <td>{producto.nombre}</td>
               <td>{producto.descripcion}</td>

@@ -171,7 +171,7 @@ const EditProductosForm = ({ product }) => {
           />
           {errores.stock && <div className="invalid-feedback">{errores.stock}</div>}
         </div>
-        <button type="submit" className="btn btn-primary mt-2">Actualizar</button>
+        <button type="submit" className="btn btn-info mt-2">Actualizar</button>
       </form>
     </div>
   );
